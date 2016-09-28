@@ -96,38 +96,73 @@ Figure 3:
 
 Package Lifecycle
 --------------------------------------------------------------------------------
-At any point in the life of a package it can be in 20 states. The state of the
+At any point in the life of a package it can be in 48 states. The state of the
 package is determined by it's data in the 3 data structures defined above.
 
 	Table 1
-	|------------------|-------|------|--------------------------------------|----|
-	| Operation        | Error | S3   | State                                | #  |
-	|------------------|-------|------|--------------------------------------|----|
-	| None             | None  | None | Not Installed                        | 0  |
-	| None             | Error | None | Failed                               | 1  |
-	| CLI Install      | None  | None | CLI Install Pending                  | 2  |
-	| CLI Install      | Error | None | CLI Install Reattempt                | 3  |
-	| Universe Install | None  | None | Universe Install Pending             | 4  |
-	| Universe Install | Error | None | Universe Install Reattempt           | 5  |
-	| Uninstall        | None  | None | User Error: Package is not installed | 6  |
-	| Uninstall        | Error | None | Abort Failed Install                 | 7  |
-	| None             | None  | Some | *Corrupted*: Should not be possible  | 8  |
-	| None             | Error | Some | Failed                               | 9  |
-	| CLI Install      | None  | Some | *Corrupted*: Should not be possible  | 10 |
-	| CLI Install      | Error | Some | CLI Install Reattempt                | 11 |
-	| Universe Install | None  | Some | *Corrupted*: Should not be possible  | 12 |
-	| Universe Install | Error | Some | Universe Install Reattempt           | 13 |
-	| Uninstall        | None  | Some | *Corrupted*: Should not be possible  | 14 |
-	| Uninstall        | Error | Some | Abort Failed Install                 | 15 |
-	| None             | None  | All  | Successfully Installed               | 16 |
-	| None             | Error | All  | Failed: Cosmos crashed               | 17 |
-	| CLI Install      | None  | All  | User Error: Already installed        | 18 |
-	| CLI Install      | Error | All  | CLI Install Reattempt                | 19 |
-	| Universe Install | None  | All  | User Error: Already installed        | 20 |
-	| Universe Install | Error | All  | Universe Install Reattempt           | 21 |
-	| Uninstall        | None  | All  | Uninstall Pending                    | 22 |
-	| Uninstall        | Error | All  | Abort Failed Install                 | 23 |
-	|------------------|-------|------|--------------------------------------|----|
+	|------------------|------------------|------|---------------------------------------------|----|
+	| Operation        | Error            | S3   | State                                       | #  |
+	|------------------|------------------|------|---------------------------------------------|----|
+	| None             | None             | None | Not Installed                               | 0  |
+	| None             | Uninstall        | None | Uninstall Failed                            | 1  |
+	| None             | Universe Install | None | Universe Install Failed                     | 2  |
+	| None             | CLI Install      | None | CLI Install Failed                          | 3  |
+
+	| CLI Install      | None             | None | CLI Install Pending                         | 4  |
+	| CLI Install      | Uninstall        | None | Uninstall abort by CLI Install              | 5  |
+	| CLI Install      | Universe Install | None | *Universe Install Reattempt by CLI Install* | 6  |xxxxx
+	| CLI Install      | CLI Install      | None | CLI Install Reattempt                       | 7  |
+
+	| Universe Install | None             | None | Universe Install Pending                    | 8  |
+	| Universe Install | Uninstall        | None | Uninstall Abort by Universe Install         | 9  |
+	| Universe Install | Universe Install | None | Universe Install Reattempt                  | 10 |
+	| Universe Install | CLI Install      | None | *CLI Install Reattempt by Universe Install* | 11 |xxxxx
+
+	| Uninstall        | None             | None | Uninstall In Progress                       | 12 |*****
+	| Uninstall        | Uninstall        | None | Uninstall Reattempt                         | 13 |
+	| Uninstall        | Universe Install | None | Universe Install Abort                      | 14 |
+	| Uninstall        | CLI Install      | None | CLI Install Abort                           | 15 |
+
+	| None             | None             | Some | *Corrupted*: Should not be possible         | 16 |
+	| None             | Uninstall        | Some | Uninstall Failed                            | 17 |
+	| None             | Universe Install | Some | Universe Install Failed                     | 18 |
+	| None             | CLI Install      | Some | CLI Install Failed                          | 19 |
+
+	| CLI Install      | None             | Some | CLI Install in Progress                     | 20 |
+	| CLI Install      | Uninstall        | Some | Uninstall abort by CLI Install              | 21 |
+	| CLI Install      | Universe Install | Some | *Universe Install Reattempt by CLI Install* | 22 |xxxxx
+	| CLI Install      | CLI Install      | Some | CLI Install Reattempt                       | 23 |
+
+	| Universe Install | None             | Some | Universe Install In Progress                | 24 |
+	| Universe Install | Uninstall        | Some | Uninstall Abort by Universe Install         | 25 |
+	| Universe Install | Universe Install | Some | Universe Install Reattempt                  | 26 |
+	| Universe Install | CLI Install      | Some | *CLI Install Reattempt by Universe Install* | 27 |xxxxx
+
+	| Uninstall        | None             | Some | Uninstall in Progress                       | 28 |
+	| Uninstall        | Uninstall        | Some | Uninstall Reattempt                         | 29 |
+	| Uninstall        | Universe Install | Some | Universe Install Abort                      | 30 |
+	| Uninstall        | CLI Install      | Some | CLI Install Abort                           | 31 |
+
+	| None             | None             | All  | Successfully Installed!!!                   | 32 |
+	| None             | Uninstall        | All  | Uninstall Failed                            | 33 |
+	| None             | Universe Install | All  | Universe Install Failed                     | 34 |
+	| None             | CLI Install      | All  | CLI Install Failed                          | 35 |
+
+	| CLI Install      | None             | All  | CLI Install in Progress                     | 36 |*****
+	| CLI Install      | Uninstall        | All  | Uninstall abort by CLI Install              | 37 |
+	| CLI Install      | Universe Install | All  | *Universe Install Reattempt by CLI Install* | 38 |xxxxx
+	| CLI Install      | CLI Install      | All  | CLI Install Reattempt                       | 39 |
+
+	| Universe Install | None             | All  | Universe Install In Progress                | 40 |*****
+	| Universe Install | Uninstall        | All  | Uninstall Abort by Universe Install         | 41 |
+	| Universe Install | Universe Install | All  | Universe Install Reattempt                  | 42 |
+	| Universe Install | CLI Install      | All  | *CLI Install Reattempt by Universe Install* | 43 |xxxxx
+
+	| Uninstall        | None             | All  | Uninstall Pending                           | 44 |
+	| Uninstall        | Uninstall        | All  | Uninstall Reattempt                         | 45 |
+	| Uninstall        | Universe Install | All  | Universe Install Abort                      | 46 |
+	| Uninstall        | CLI Install      | All  | CLI Install Abort                           | 47 |
+	|------------------|------------------|------|---------------------------------------------|----|
 
 As elucidated by table 1 above. Even if all the data in package has been
 persisted to S3, the package cannot be considered installed if there are errors
@@ -135,10 +170,25 @@ pending for it in the error queue. This indicates that in order to answer the
 query "What packages are installed?" we must look at both the error queue and
 S3, however we may ignore the operation queue.
 
-Note that a failed unistall is equivalent to a falied install. From table 1 we
-can see that there is no way to disambiguate them. This is fine, since the user
-gets to decide how to proceed in the case of a failure.
+Preserving Idempotent Operations
+--------------------------------------------------------------------------------
+In theory the Uninstall and Install operations are idempotent as long as the
+files being written or deleted are kept constant. The table above marks states
+with a xxxxx that would break idempotency if allowed to occur. A further
+requirement of idempotency is that the set of files used for installation, or
+referenced for deletion should not change. This points to a few issues with the
+current path of implementation:
 
+1. Universe installs get the contents directly from universe. This would retain
+   idempotency if the files in the universe package never change. 
+
+2. If the universe is to hold lean packages, idempotency would be broken since the
+   universe cannot control the state of the resources referenced by the package.
+
+One solution to the points above is for the Universe install to follow the same
+strategy as the CLI install. Namely, the universe install should first download
+all resources into temporary S3 storage and then proceed with the install. This
+guarantees that the state of the files used for the install will not change.
 
 Installation Subsystem
 --------------------------------------------------------------------------------
@@ -155,17 +205,34 @@ adding a node to the operation queue.
 For each operation the producer will have to do the following work:
 
 * CLI Install
+	* Check that package is not already installed
 	* Store package file in temporary S3 path
 	* Add node to operation queue with the operation type, the package information, and the location of
 	  the package i.e. the URI of the package in S3.
 * Universe Install
+	* check that package is not already installed
 	* Add node to operation	queue with the operation type, and the package
 	  information.
 * Uninstall
+	* Check that package is installed
 	* Add node to operation queue with the operation type, and the package
 	  information
 * Show System State
 	* Nothing to do
+
+Note that in order for the table 1 to be valid this components needs to uphold
+some invariants:
+
+* CLI Install
+	* Cannot Add operation node if the package is already installed
+	* Temporary S3 upload must finish before operation node is created
+* Universe Install
+	* Cannot Add operation node if the package is already installed
+* Uninstall
+	* Cannot Add operation node if the package is not installed
+
+Violating the rules above would introduce ambiguity to the states outline in
+table 1.
 
 ### Processor ##################################################################
 
@@ -191,7 +258,7 @@ which the producer uploads a package to S3, gets delayed, and then adds the
 operation to the operation queue. In the time between the upload to S3 and the
 creation of the operation node, the state of the system is identical to a failed
 install, followed by a user requested abort. There are bits in the temporary
-folder, without a corresponding operation node.
+folder, without a corresponding operation node or error node.
 
 One resolution to this issue is to delete nodes that do not have a corresponding
 operation node, or error node after they have aged for a set amount of time. We
