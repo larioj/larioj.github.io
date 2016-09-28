@@ -67,7 +67,7 @@ Figure 3 shows what storage may look like.
 
 Figure 3:
 
-	/Errors
+	/Storage
 		|-- E
 		|-- A
 		|-- B
@@ -77,35 +77,35 @@ Package Lifecycle
 At any point in the life of a package it can be in 20 states. The state of the
 package is determined by it's data in the 3 data structures defined above.
 
-Table 1
-|------------------|-------|------|--------------------------------------|----|
-| Operation        | Error | S3   | State                                | #  |
-|------------------|-------|------|--------------------------------------|----|
-| None             | None  | None | Not Installed                        | 0  |
-| None             | Error | None | Failed                               | 1  |
-| CLI Install      | None  | None | CLI Install Pending                  | 2  |
-| CLI Install      | Error | None | CLI Install Reattempt                | 3  |
-| Universe Install | None  | None | Universe Install Pending             | 4  |
-| Universe Install | Error | None | Universe Install Reattempt           | 5  |
-| Uninstall        | None  | None | User Error: Package is not installed | 6  |
-| Uninstall        | Error | None | Abort Failed Install                 | 7  |
-| None             | None  | Some | *Corrupted*: Should not be possible  | 8  |
-| None             | Error | Some | Failed                               | 9  |
-| CLI Install      | None  | Some | *Corrupted*: Should not be possible  | 10 |
-| CLI Install      | Error | Some | CLI Install Reattempt                | 11 |
-| Universe Install | None  | Some | *Corrupted*: Should not be possible  | 12 |
-| Universe Install | Error | Some | Universe Install Reattempt           | 13 |
-| Uninstall        | None  | Some | *Corrupted*: Should not be possible  | 14 |
-| Uninstall        | Error | Some | Abort Failed Install                 | 15 |
-| None             | None  | All  | Successfully Installed               | 16 |
-| None             | Error | All  | Failed: Cosmos crashed               | 17 |
-| CLI Install      | None  | All  | User Error: Already installed        | 18 |
-| CLI Install      | Error | All  | CLI Install Reattempt                | 19 |
-| Universe Install | None  | All  | User Error: Already installed        | 20 |
-| Universe Install | Error | All  | Universe Install Reattempt           | 21 |
-| Uninstall        | None  | All  | Uninstall Pending                    | 22 |
-| Uninstall        | Error | All  | Abort Failed Install                 | 23 |
-|------------------|-------|------|--------------------------------------|----|
+	Table 1
+	|------------------|-------|------|--------------------------------------|----|
+	| Operation        | Error | S3   | State                                | #  |
+	|------------------|-------|------|--------------------------------------|----|
+	| None             | None  | None | Not Installed                        | 0  |
+	| None             | Error | None | Failed                               | 1  |
+	| CLI Install      | None  | None | CLI Install Pending                  | 2  |
+	| CLI Install      | Error | None | CLI Install Reattempt                | 3  |
+	| Universe Install | None  | None | Universe Install Pending             | 4  |
+	| Universe Install | Error | None | Universe Install Reattempt           | 5  |
+	| Uninstall        | None  | None | User Error: Package is not installed | 6  |
+	| Uninstall        | Error | None | Abort Failed Install                 | 7  |
+	| None             | None  | Some | *Corrupted*: Should not be possible  | 8  |
+	| None             | Error | Some | Failed                               | 9  |
+	| CLI Install      | None  | Some | *Corrupted*: Should not be possible  | 10 |
+	| CLI Install      | Error | Some | CLI Install Reattempt                | 11 |
+	| Universe Install | None  | Some | *Corrupted*: Should not be possible  | 12 |
+	| Universe Install | Error | Some | Universe Install Reattempt           | 13 |
+	| Uninstall        | None  | Some | *Corrupted*: Should not be possible  | 14 |
+	| Uninstall        | Error | Some | Abort Failed Install                 | 15 |
+	| None             | None  | All  | Successfully Installed               | 16 |
+	| None             | Error | All  | Failed: Cosmos crashed               | 17 |
+	| CLI Install      | None  | All  | User Error: Already installed        | 18 |
+	| CLI Install      | Error | All  | CLI Install Reattempt                | 19 |
+	| Universe Install | None  | All  | User Error: Already installed        | 20 |
+	| Universe Install | Error | All  | Universe Install Reattempt           | 21 |
+	| Uninstall        | None  | All  | Uninstall Pending                    | 22 |
+	| Uninstall        | Error | All  | Abort Failed Install                 | 23 |
+	|------------------|-------|------|--------------------------------------|----|
 
 As elucidated by table 1 above. Even if all the data in package has been
 persisted to S3, the package cannot be considered installed if there are errors
