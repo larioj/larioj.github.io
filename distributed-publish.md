@@ -139,6 +139,10 @@ order for a package to be considered Not Installed (#0 in table). It must have
 no files in S3 and there must be no errors associated with the package in the
 error queue.
 
+Package Coordinate
+--------------------------------------------------------------------------------
+TODO: Package Coordinate Discussion
+
 Package Definition
 --------------------------------------------------------------------------------
 TODO: Define package
