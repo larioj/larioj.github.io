@@ -1,13 +1,35 @@
 Distributed Publish
 ================================================================================
 This document outlines the operation and organization of the publishing
-mechanism for cosmos. At a high level this mechanism provide the following
+mechanism for cosmos. At a high level this mechanism must provide the following
 operations:
 
 1. Universe Install
 2. CLI Install
 3. Uninstall
 4. Show System State
+
+### Show System State ##########################################################
+This operation shows the state of the system. It must show which packages have
+been installed, are pending installation, are pending uninstallation, and have
+failed an operation.
+
+### Universe Install ###########################################################
+This operation attempts to make a package in the universe available in the local
+repository of the cluster. In order for the package to be available it must move
+to the Successfully Installed state. This means that all files
+associated with the package must be present in S3, and there must be no errors
+associated with the operation.
+
+### CLI Install ################################################################
+This operation attempts to make a package in a local computer available to the
+cluster through the local repository. It must satisfy all the requirements of
+the Universe Install.
+
+### Uninstall ##################################################################
+This operation removes a package from the local repository of the cluster. In
+order for a package to be considered Not Installed (#0 in table). It must have
+no files in S3 and there must be no errors associated with the operation.
 
 System State
 --------------------------------------------------------------------------------
@@ -33,10 +55,10 @@ Figure 1 shows what an operation queue may look like.
 Figure 1:
 
 	/Operations
-		|-- A {"data": { "operation": "installing" }}
-		|-- B {"data": { "operation": "installing" }}
-		|-- C {"data": { "operation": "installing" }}
-		|-- D {"data": { "operation": "installing" }}
+		|-- A {TODO: Add node definition here}
+		|-- B
+		|-- C
+		|-- D 
 
 ### Error Queue ################################################################
 The error queue resides in zookeeper. It contains information about operations
@@ -53,12 +75,12 @@ Figure 2 shows what an error queue may look like.
 Figure 2:
 
 	/Errors
-		|-- E
+		|-- E {TODO: Add node definition here}
 		|-- A
 		|-- B
 
 
-### Storage  ###################################################################
+### Storage ####################################################################
 In this document we assume that the storage is S3. This storage contains the
 installation. All the resources that an application needs in order to run must
 be stored here.
@@ -68,7 +90,7 @@ Figure 3 shows what storage may look like.
 Figure 3:
 
 	/Storage
-		|-- E
+		|-- E {TODO: Add node definition here}
 		|-- A
 		|-- B
 
@@ -113,31 +135,84 @@ pending for it in the error queue. This indicates that in order to answer the
 query "What packages are installed?" we must look at both the error queue and
 S3, however we may ignore the operation queue.
 
-Operation Requirements
+Note that a failed unistall is equivalent to a falied install. From table 1 we
+can see that there is no way to disambiguate them. This is fine, since the user
+gets to decide how to proceed in the case of a failure.
+
+
+Installation Subsystem
 --------------------------------------------------------------------------------
+The installation subsystem is responsible for moving packages between the
+various states outline in table 1 in order to accomplish any one of the
+operations outlined in above. It will be decomposed into 3 cooperating systems:
+the operation producer, the operation processor and the garbage collector. 
 
-### Show System State #########################################################
-This operation shows the state of the system. It must show which packages have
-been installed, are pending installation, are pending uninstallation, and have
-failed to be installed.
+### Producer ###################################################################
+The producer is responsible for adding operations to the operation queue.
+Depending on the operation the producer may have to do extra work besides
+adding a node to the operation queue.
 
-### Universe Install ##########################################################
-This operation attempts to make a package in the universe available in the local
-repository of the cluster. In order for the package to be avaible it must move
-to Successfully Installed state (#16 in the table). This means that all files
-associated with the package must be present in S3, and there must be no errors
-associated with the package in the error queue.
+For each operation the producer will have to do the following work:
 
-### CLI Install ###############################################################
-This operation attempts to make a package in a local computer available to the
-cluster through the local repository. It must satisfy all the requirements of
-the Universe Install.
+* CLI Install
+	* Store package file in temporary S3 path
+	* Add node to operation queue with the operation type, the package information, and the location of
+	  the package i.e. the URI of the package in S3.
+* Universe Install
+	* Add node to operation	queue with the operation type, and the package
+	  information.
+* Uninstall
+	* Add node to operation queue with the operation type, and the package
+	  information
+* Show System State
+	* Nothing to do
 
-### Uninstall #################################################################
-This operation removes a package from the local repository of the cluster. In
-order for a package to be considered Not Installed (#0 in table). It must have
-no files in S3 and there must be no errors associated with the package in the
-error queue.
+### Processor ##################################################################
+
+
+### Garbage Collector ##########################################################
+The garbage collector is responsible for cleaning up files in S3 that are no
+longer needed. As a prerequisite for the Processor to do its job, in the case of
+a CLI install, it needs to have the package data available in a temporary
+location in S3. Once the package has been installed, this data is no longer
+necessary. This component cleans up this unnecessary data.
+
+The operation of this component is as follows:
+
+1. Get list of packages that are in the Successfully Installed state.
+2. Remove any files in the temporary S3 directory that are duplicates of the
+   list computed in step 1.
+
+Note that while the order of operations above is safe, it may not get all the
+garbage. It does not handle the case in which we attempt an install, but it
+fails and then the user chooses to uninstall. We cannot safely handle this case
+because we cannot disambiguate the scenario just mentioned from the scenario in
+which the producer uploads a package to S3, gets delayed, and then adds the
+operation to the operation queue. In the time between the upload to S3 and the
+creation of the operation node, the state of the system is identical to a failed
+install, followed by a user requested abort. There are bits in the temporary
+folder, without a corresponding operation node.
+
+One resolution to this issue is to delete nodes that do not have a corresponding
+operation node, or error node after they have aged for a set amount of time. We
+could say that if after a day there does not exist a operation node or error
+node the temporary files are safe to be deleted. This would give us a very high
+probability that we are not in the case where the producer got delayed between
+the S3 upload and the node publish.
+
+The above discussion suggests the following extension to the algorithm:
+
+3. Get list of packages in the install pending, or error states.
+4. Remove all packages that are greater than N hours old and do not appear in
+   the list computed in 3.
+
+
+
+
+
+
+
+
 
 Package Coordinate
 --------------------------------------------------------------------------------
@@ -146,8 +221,17 @@ TODO: Package Coordinate Discussion
 Package Definition
 --------------------------------------------------------------------------------
 TODO: Define package
-
-Installation Subsystem
+Package Definition
 --------------------------------------------------------------------------------
-TODO: Define installation subsystem
+At a high level a package consists of a file called package.json which includes
+the metadata associated with the package, and a, possibly empty, list of resources
+that need to be uploaded to storage. This package constitutes the input to the
+system.
+
+TODO: This still needs more clarity on what a package definition contains
+
+### Release Version ###########################################################
+Another thorny issue with package definition is the presence of the release
+version. This release version
+
 
