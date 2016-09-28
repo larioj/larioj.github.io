@@ -16,6 +16,11 @@ authSbt() {
 	sbt -Dcom.mesosphere.cosmos.dcosUri="http://${1}"
 }
 
+itTest() {
+	export COSMOS_AUTHORIZATION_HEADER="token=$(http --ignore-stdin --verify no "https://${1}/acs/api/v1/auth/login" uid=bootstrapuser password=deleteme | jq -r ".token")"
+	sbt -Dcom.mesosphere.cosmos.dcosUri="http://${1}" "it:test"
+}
+
 psRepo() {
 	http GET http://localhost:7070/service/ps/repository \
 		Accept:'application/vnd.dcos.universe.repo+json;charset=utf-8;version=v3'
