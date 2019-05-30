@@ -1,5 +1,4 @@
 ---
-layout: default
+layout: home
 title: Index
 ---
-# Index

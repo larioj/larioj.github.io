@@ -1,13 +1,18 @@
 ---
-layout: default
-title: About
+layout: page
+title: Github-Pages
 ---
 # Github Pages
     : vsplit
     https://jekyllrb.com/docs/step-by-step
 
 ## Links
-- <docs/dev.md>
+- docs/dev.md
+
+## Files
+- \_config.yml
+- github-pages.md
+- index.md
 
 ## Install Jekyll
     $ sudo gem install jekyll bundler
