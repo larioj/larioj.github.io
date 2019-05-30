@@ -11,6 +11,8 @@ title: About
     $ bundler init
     $ echo 'gem "jekyll"' >> Gemfile
     $ bundle
+
+## Build and Test
     $ bundle exec jekyll build
     $ bundle exec jekyll serve
 
@@ -39,3 +41,10 @@ title: About
     $ touch _posts/2019-05-30-intro.md
     $ touch _layouts/post.html
     $ touch blog.html
+
+
+## Config
+    $ touch _config.yml
+
+## Syntax Highlighting
+    $ sudo gem install kramdown rouge
