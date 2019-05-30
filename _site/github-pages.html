@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>About</title>
+  </head>
+  <body>
+    <nav>
+  
+    <a href="/">Home</a>
+  
+    <a href="/about.html">About</a>
+  
+    <a href="/github-pages.html">Github Pages</a>
+  
+    <a href="blog.html">Blog</a>
+  
+</nav>
+
+    <h1 id="github-pages">Github Pages</h1>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>: vsplit
+https://jekyllrb.com/docs/step-by-step
+</code></pre></div></div>
+
+<h2 id="install-jekyll">Install Jekyll</h2>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ sudo gem install jekyll bundler
+$ bundler init
+$ echo 'gem "jekyll"' &gt;&gt; Gemfile
+$ bundle
+$ bundle exec jekyll build
+$ bundle exec jekyll serve
+</code></pre></div></div>
+
+<h2 id="files">Files</h2>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ tree .
+</code></pre></div></div>
+
+<h2 id="create-a-layout">Create a layout</h2>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ mkdir _layouts/
+$ touch _layouts/default.html
+$ touch about.md
+</code></pre></div></div>
+
+<h2 id="create-index">Create Index</h2>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ rm index.html
+$ touch index.md
+</code></pre></div></div>
+
+<h2 id="navigation">Navigation</h2>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ mkdir _includes/
+$ touch _includes/navigation.html
+</code></pre></div></div>
+
+<h2 id="data">Data</h2>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ mkdir _data/
+$ touch _data/navigation.yaml
+</code></pre></div></div>
+
+<h2 id="blog-posts">Blog Posts</h2>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ mkdir _posts/
+$ touch _posts/2019-05-30-intro.md
+$ touch _layouts/post.html
+$ touch blog.html
+</code></pre></div></div>
+
+  </body>
+</html>
