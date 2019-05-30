@@ -6,6 +6,9 @@ title: About
     : vsplit
     https://jekyllrb.com/docs/step-by-step
 
+## Links
+- <docs/dev.md>
+
 ## Install Jekyll
     $ sudo gem install jekyll bundler
     $ bundler init
