@@ -60,7 +60,7 @@ client somewhere in our path.
     $ which docker
 
 ## Configure client
-Add `export DOCKER_HOST=tcp://X.X.X.X:2375` to $HOME/.profile
+Add `export DOCKER_HOST=tcp://X.X.X.X:2375` to `$HOME/.profile`
 
     $ echo $DOCKER_HOST
 
