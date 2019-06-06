@@ -19,13 +19,46 @@ title: Github-Pages
     $ bundler init
     $ echo 'gem "jekyll"' >> Gemfile
     $ bundle
+    $ bundle install
 
 ## Build and Test
     $ bundle exec jekyll build
     $ bundle exec jekyll serve
 
 ## Files
-    $ tree .
+    .
+    ├── 404.html
+    ├── Gemfile
+    ├── Gemfile.lock
+    ├── _config.yml
+    ├── _posts
+    │   └── 2019-05-30-intro.md
+    ├── _site
+    │   ├── 2019
+    │   │   └── 05
+    │   │       └── 30
+    │   │           └── intro.html
+    │   ├── 404.html
+    │   ├── assets
+    │   │   ├── main.css
+    │   │   └── minima-social-icons.svg
+    │   ├── docs
+    │   │   └── dev.md
+    │   ├── feed.xml
+    │   ├── github-pages.html
+    │   ├── index.html
+    │   └── tutorial
+    │       ├── remote-docker.md
+    │       ├── ssh-tunnel.md
+    │       └── ubuntu-usb.md
+    ├── docs
+    │   └── dev.md
+    ├── github-pages.md
+    ├── index.md
+    └── tutorial
+        ├── remote-docker.md
+        ├── ssh-tunnel.md
+        └── ubuntu-usb.md
 
 ## Create a layout
     $ mkdir _layouts/
