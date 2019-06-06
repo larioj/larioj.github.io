@@ -66,10 +66,15 @@ Add `export DOCKER_HOST=tcp://X.X.X.X:2375` to `$HOME/.profile`
 
 ## Test Client
 
+    $ ssh $CARBON
     $ docker --version
     $ docker run hello-world
     $ docker pull ubuntu
-    $ docker run -it ubuntu /bin/bash
+    $ docker run -it \
+        -v /home/larioj:/mnt/larioj \
+        ubuntu /bin/bash
+
+Note that mounted paths refer to paths in the host.
 
 ## Caveats
 Anyone with access to port 2375 can run commands on docker. This

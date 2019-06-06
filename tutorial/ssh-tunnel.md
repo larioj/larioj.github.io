@@ -1,8 +1,7 @@
 # SSH Tunnel
-    : vsplit
   
 ## Docker Image
-https://github.com/panubo/docker-sshd
+We will be using [docker-sshd].
 
 ### Run Locally
     $ docker pull panubo/sshd:1.0.3
@@ -16,7 +15,7 @@ https://github.com/panubo/docker-sshd
         -p 2222:22 \
         -v $HOME/.ssh/id_rsa.pub:/etc/authorized_keys/larioj \
         -e SSH_USERS="larioj:888:888" docker.io/panubo/sshd:1.0.3
-    $ ssh localhost -p 2222
+    $ ssh $CARBON -p 2222
     $ docker ps
     $ docker stop $(docker ps -a -q)
 
@@ -25,8 +24,10 @@ https://github.com/panubo/docker-sshd
       name: ""
         bar: foo
       foo: "teuha"
-      EOF
+    EOF
 
 ## Local ssh
     $ /usr/local/Cellar/nmap/7.70/bin/nmap -sP 10.0.0.168/24
     $ ssh $CARBON
+
+[docker-sshd]: https://github.com/panubo/docker-sshd
