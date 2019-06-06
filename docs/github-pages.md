@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Github-Pages
+title: Github Pages
 ---
 # Github Pages
     : vsplit
