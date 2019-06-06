@@ -21,7 +21,12 @@ https://github.com/panubo/docker-sshd
     $ docker stop $(docker ps -a -q)
 
 ## Run On Kubernetes
-// TODO: add trim command
-    $ cat <<"    EOF"
-        this is a herodoc
-    EOF
+    $ cat <<EOF
+      name: ""
+        bar: foo
+      foo: "teuha"
+      EOF
+
+## Local ssh
+    $ /usr/local/Cellar/nmap/7.70/bin/nmap -sP 10.0.0.168/24
+    $ ssh $CARBON
