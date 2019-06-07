@@ -6,7 +6,7 @@
 ## Git
     $ git status
     $ git add .
-    $ git commit
+    $ git commit -m "Update"
     $ git commit --amend
     $ git push
     $ git push -f
