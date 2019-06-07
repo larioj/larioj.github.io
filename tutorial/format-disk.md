@@ -5,4 +5,6 @@
 
 ## Mount Disk
     # add to /etc/fstab
-    /dev/sdb1               /disk1           ext3    defaults        1 2
+    $ sudo echo \
+        '/dev/sdb1               /disk1           ext3    defaults        1 2' \
+        >> /etc/fstab
