@@ -3,9 +3,11 @@
 ## Docker Image
 We will be using a slightly modified [docker-sshd].
 
-### Create Modify Docker Image
-    $ docker
-
+### Create Modified Docker Image
+    # data/ssh-tunnel/Dockerfile
+    $ docker build -t ssh-tunnel:1.0.3 data/ssh-tunnel
+    $ docker tag ssh-tunnel:1.0.3 larioj/ssh-tunnel:1.0.3
+    $ docker push larioj/ssh-tunnel:1.0.3
 
 ### Run Locally
     $ docker pull panubo/sshd:1.0.3
