@@ -1,0 +1,66 @@
+call plug#begin()
+Plug 'tpope/vim-sensible'
+Plug 'larioj/plum'
+Plug 'larioj/plum-tree'
+Plug 'larioj/plum-heredoc'
+Plug 'vim-scripts/vim-auto-save'
+Plug 'ervandew/supertab'
+Plug 'Shougo/deoplete.nvim'
+Plug 'Shougo/vimproc.vim'
+Plug 'purescript-contrib/purescript-vim'
+Plug 'airblade/vim-rooter'
+Plug 'morhetz/gruvbox'
+call plug#end()
+
+set nocompatible 
+filetype plugin indent on
+syntax on
+
+set nowrap
+set number
+set autoread
+set nocompatible
+set noswapfile
+set smartcase
+set smarttab
+set tw=80
+set history=1000
+set tabstop=8 softtabstop=0 expandtab shiftwidth=2 smarttab
+set clipboard=unnamed
+set formatoptions-=t
+set hlsearch
+
+colorscheme gruvbox
+set background=dark
+
+let $BASH_ENV = "~/.bash_aliases"
+let g:auto_save = 1
+
+set mouse=a
+call plum#SetMouseBindings()
+"let g:plum_debug = 1
+let g:plum_actions = [
+      \ plum#heredoc#Heredoc(),
+      \ plum#term#SmartTerminal(),
+      \ plum#vim#Execute(),
+      \ plum#fso#OpenFso(),
+      \ plum#tree#OpenFso()
+      \ ]
+
+nnoremap <MiddleMouse> <LeftMouse>ZZ
+inoremap <MiddleMouse> <esc><LeftMouse>ZZ
+vnoremap <MiddleMouse> <LeftMouse>ZZ
+
+nnoremap <cr> o
+vnoremap <cr> y
+vnoremap <bs> d
+nnoremap b :b#<cr>
+inoremap <c-v> <esc><c-v>
+
+let g:larioj_new_tab=1
+autocmd TabNew * :let g:larioj_new_tab=1
+autocmd BufEnter * :if g:larioj_new_tab | let g:larioj_new_tab=0 | vsplit | endif
+
+let mapleader=' '
+nnoremap <SPACE> <Nop>
+nnoremap <leader><SPACE> :below split ~/Projects/common-commands.md<cr>
