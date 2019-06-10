@@ -53,6 +53,7 @@ We will be using a slightly modified [docker-sshd].
           containers:
           - name: ssh-tunnel
             image: larioj/ssh-tunnel:1.0.3
+            imagePullPolicy: Always
             env:
             - name: SSH_USERS
               valueFrom:
@@ -66,6 +67,7 @@ We will be using a slightly modified [docker-sshd].
               name: ssh-tunnel-authorized-keys
     EOF
     $ kubectl get deployment
+    $ kubectl delete deployment ssh-tunnel
 
 ### Create a Service
     $ kubectl apply -f - <<EOF
@@ -76,10 +78,11 @@ We will be using a slightly modified [docker-sshd].
       labels:
         app: ssh-tunnel
     spec:
-      type: LoadBalancer
+      type: NodePort # LoadBalancer
       ports:
       - port: 2222
         targetPort: 22
+        nodePort: 32222
         protocol: TCP
       selector:
         app: ssh-tunnel
@@ -87,7 +90,8 @@ We will be using a slightly modified [docker-sshd].
     $ kubectl get service
 
 ## SSH into tunnel
-    $ ssh larioj@35.247.0.51 -p 2222
+    $ ssh 35.247.0.51 -p 2222
+    $ ssh 34.83.27.217 -p 32222
 
 ## Debug
     $ kubectl get pod
