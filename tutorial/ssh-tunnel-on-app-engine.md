@@ -14,6 +14,7 @@
     $ gcloud app create --region=us-west2
     $ cd data/ssh-tunnel-on-app-engine/ && gcloud app deploy
     $ gcloud app describe
-    $ gcloud compute instances list
-    $ gcloud app delete
+
+## Delete App
+    $ gcloud app services delete default
     
